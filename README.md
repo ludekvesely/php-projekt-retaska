@@ -8,7 +8,7 @@
 ### Start databáze
 `sudo service mysql start`
 
-### Vytvoření databáze `php-lekce-9`
+### Vytvoření databáze `php-projekt-retaska`
 `bin/console doctrine:database:create`
 
 ### Založení tabulek
