@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+sudo service mysql start
+composer install
+
+if [ "$1" == 'all' ]; then
+    bin/console doctrine:database:create
+    bin/console doctrine:schema:update --force
+fi
