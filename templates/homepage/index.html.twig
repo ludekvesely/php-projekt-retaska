@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block body %}
+    <h1>Homepage</h1>
+    <ul>
+        <li>
+            <a href="{{ path('product_list_index') }}">Go to product list</a>
+        </li>
+    </ul>
+{% endblock %}
