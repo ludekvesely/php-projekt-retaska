@@ -7,15 +7,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/product-detail")
+ * @Route("/order-form")
  */
-class ProductDetail extends AbstractController
+class OrderFormController extends AbstractController
 {
     /**
-     * @Route("/", name="product_detail_index")
+     * @Route("/", name="order_form_index")
      */
     public function index(): Response
     {
-        return $this->render('product_detail/index.html.twig');
+        return $this->render('order_form/index.html.twig');
     }
 }

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/product-list")
  */
-class ProductList extends AbstractController
+class ProductListController extends AbstractController
 {
     /**
      * @Route("/", name="product_list_index")
