@@ -1,7 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Produkty{% endblock %}
+{% block title %}Seznam produktů{% endblock %}
 
 {% block body %}
-    <h1>Produkty</h1>
+    <br>
+    <h1>Seznam produktů</h1>
+    <div class="text-center">
+        {% for row in products|batch(3) %}
+            <br>
+            <div class="row card-deck">
+            {% for product in row %}
+                <div class="col-sm-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{{ path('product_detail_index') }}">{{ product.name }}</a>
+                            </h4>
+                            <p class="card-text">{{ product.price|number_format(2, ',', ' ') }} Kč</p>
+                            <a href="{{ path('order_form_index') }}" class="btn btn-primary">Objednat</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
