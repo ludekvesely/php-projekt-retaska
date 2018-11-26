@@ -3,5 +3,31 @@
 {% block title %}Detail produktu{% endblock %}
 
 {% block body %}
-    <h1>Detail produktu</h1>
+    <br>
+    <h1>{{ product.name }}</h1>
+    <br>
+    <table class="table table-bordered col-8">
+        <tr>
+            <td>Název produktu:</td>
+            <td>{{ product.name }}</td>
+        </tr>
+        <tr>
+            <td>Popis:</td>
+            <td>{{ product.description }}</td>
+        </tr>
+        <tr>
+            <td>Skladem:</td>
+            <td>{{ product.stock }} ks</td>
+        </tr>
+        <tr>
+            <td>Cena:</td>
+            <td>{{ product.price|number_format(2, ',', ' ') }} Kč</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-primary">Objednat</button>
+            </td>
+        </tr>
+    </table>
+
 {% endblock %}
