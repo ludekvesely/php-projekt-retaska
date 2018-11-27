@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Form\OrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,10 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderFormController extends AbstractController
 {
     /**
-     * @Route("/", name="order_form_index")
+     * @Route("/{id}", name="order_form_index", methods="GET|POST")
      */
-    public function index(): Response
+    public function index(Request $request, Order $order): Response
     {
-        return $this->render('order_form/index.html.twig');
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
+        }
+
+        return $this->render('order_form/index.html.twig', [
+            'order' => $order,
+            'form' => $form->createView(),
+        ]);
     }
 }
