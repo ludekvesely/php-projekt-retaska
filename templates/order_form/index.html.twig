@@ -6,6 +6,11 @@
     <h1>Objednávkový formulář</h1>
     <div class="row">
         <div class="col-8">
+            {% if remainingOnStock is defined %}
+                <div class="alert alert-danger">
+                    Na skladě zbývá pouze {{ remainingOnStock }} kusů.
+                </div>
+            {% endif %}
             {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
         </div>
         <div class="col-4">

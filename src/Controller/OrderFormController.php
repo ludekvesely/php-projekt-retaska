@@ -67,8 +67,19 @@ class OrderFormController extends AbstractController
                 return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
             }
 
+            $itemsOnStock = $order->getProduct()->getStock();
+
+            if (($itemsOnStock - $order->getQuantity()) < 0) {
+                return $this->render('order_form/index.html.twig', [
+                    'order' => $order,
+                    'form' => $form->createView(),
+                    'remainingOnStock' => $order->getProduct()->getStock()
+                ]);
+            }
+
             $order->setCreated(new \DateTime);
             $order->setSubmitted(true);
+            $order->getProduct()->setStock($itemsOnStock - $order->getQuantity());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('order_form_confirm');
