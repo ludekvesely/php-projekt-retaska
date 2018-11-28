@@ -105,6 +105,11 @@ class Order
      */
     private $delivery;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -285,5 +290,17 @@ class Order
             $this->delivery->getPrice() +
             $this->payment->getPrice()
         ;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(?\DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
     }
 }

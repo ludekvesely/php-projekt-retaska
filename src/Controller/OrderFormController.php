@@ -67,6 +67,7 @@ class OrderFormController extends AbstractController
                 return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
             }
 
+            $order->setCreated(new \DateTime);
             $order->setSubmitted(true);
             $this->getDoctrine()->getManager()->flush();
 
