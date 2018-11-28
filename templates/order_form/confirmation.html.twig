@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Objednávkový formulář{% endblock %}
+
+{% block body %}
+    <br>
+    <h1>Shrnutí objednávky</h1>
+    <br>
+    <div class="alert alert-success">
+        Vaše objednávka byla přijata ke zpracování.
+    </div>
+    <br>
+    <div class="text-center">
+        <a href="{{ path('homepage_index') }}" class="btn btn-primary">Zpět na úvodní stranu</a>
+    </div>
+{% endblock %}

@@ -43,6 +43,14 @@ class OrderFormController extends AbstractController
     }
 
     /**
+     * @Route("/confirm", name="order_form_confirm")
+     */
+    public function confirm(): Response
+    {
+        return $this->render('order_form/confirmation.html.twig');
+    }
+
+    /**
      * @Route("/{id}", name="order_form_index", methods="GET|POST")
      */
     public function index(Request $request, Order $order): Response
@@ -52,13 +60,17 @@ class OrderFormController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $order->updateTotalPrice();
-            $this->getDoctrine()->getManager()->flush();
 
             if ($form->get('updateTotalPrice')->isClicked()) {
+                $this->getDoctrine()->getManager()->flush();
+
                 return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
             }
 
-            return $this->redirectToRoute('homepage_index');
+            $order->setSubmitted(true);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('order_form_confirm');
         }
 
         return $this->render('order_form/index.html.twig', [
