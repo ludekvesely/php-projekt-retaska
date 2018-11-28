@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -31,31 +32,40 @@ class Order
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email(message="E-mail není ve správném formátu")
+     * @Assert\NotBlank(message="Vyplňte prosím váš e-mail")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Vyplňte prosím vaše telefonní číslo")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Vyplňte prosím vaše jméno a příjmení")
      */
     private $nameAndSurname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Vyplňte prosím ulici")
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Vyplňte prosím město")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
+     * @Assert\Regex("/\d/")
+     * @Assert\Length(min="5", max="5")
+     * @Assert\NotBlank(message="Vyplňte prosím PSČ")
      */
     private $zip;
 
