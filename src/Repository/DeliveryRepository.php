@@ -19,32 +19,10 @@ class DeliveryRepository extends ServiceEntityRepository
         parent::__construct($registry, Delivery::class);
     }
 
-//    /**
-//     * @return Delivery[] Returns an array of Delivery objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findFirst(): Delivery
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $orders = $this->findBy([], null, 1);
 
-    /*
-    public function findOneBySomeField($value): ?Delivery
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return current($orders);
     }
-    */
 }

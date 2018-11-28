@@ -4,5 +4,22 @@
 
 {% block body %}
     <h1>Objednávkový formulář</h1>
-    {{ form(form) }}
+    <div class="row">
+        <div class="col-8">
+            {{ form(form) }}
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Shrnutí objednávky
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Objednaný produkt:</h5>
+                    <p class="card-text">{{ order.product.name }}</p>
+                    <h5 class="card-title">Celková cena:</h5>
+                    <p class="card-text">{{ order.totalPrice|number_format(2, ',', ' ') }} Kč</p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Table(name="`order`")
  */
 class Order
 {
@@ -17,6 +18,7 @@ class Order
     private $id;
 
     /**
+     * @var Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -28,40 +30,41 @@ class Order
     private $quantity;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private $nameAndSurname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $street;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=5, nullable=true)
      */
     private $zip;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var Country
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $country;
-
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -76,15 +79,17 @@ class Order
     /**
      * @ORM\Column(type="boolean")
      */
-    private $submitted;
+    private $submitted = false;
 
     /**
+     * @var Payment
      * @ORM\ManyToOne(targetEntity="App\Entity\Payment")
      * @ORM\JoinColumn(nullable=false)
      */
     private $payment;
 
     /**
+     * @var Delivery
      * @ORM\ManyToOne(targetEntity="App\Entity\Delivery")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -143,14 +148,14 @@ class Order
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNameAndSurname(): ?string
     {
-        return $this->name;
+        return $this->nameAndSurname;
     }
 
-    public function setName(string $name): self
+    public function setNameAndSurname(string $nameAndSurname): self
     {
-        $this->name = $name;
+        $this->nameAndSurname = $nameAndSurname;
 
         return $this;
     }
@@ -191,12 +196,12 @@ class Order
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getCountry(): ?Country
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): self
+    public function setCountry(Country $country): self
     {
         $this->country = $country;
 
@@ -261,5 +266,10 @@ class Order
         $this->delivery = $delivery;
 
         return $this;
+    }
+
+    public function updateTotalPrice(): void
+    {
+        $this->totalPrice = $this->product->getPrice() + $this->delivery->getPrice() + $this->payment->getPrice();
     }
 }

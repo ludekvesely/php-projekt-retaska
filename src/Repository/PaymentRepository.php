@@ -19,32 +19,10 @@ class PaymentRepository extends ServiceEntityRepository
         parent::__construct($registry, Payment::class);
     }
 
-//    /**
-//     * @return Payment[] Returns an array of Payment objects
-//     */
-    /*
-    public function findByExampleField($value)
+    public function findFirst(): Payment
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $orders = $this->findBy([], null, 1);
 
-    /*
-    public function findOneBySomeField($value): ?Payment
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return current($orders);
     }
-    */
 }
