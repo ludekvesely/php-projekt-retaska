@@ -51,9 +51,14 @@ class OrderFormController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $order->updateTotalPrice();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
+            if ($form->get('updateTotalPrice')->isClicked()) {
+                return $this->redirectToRoute('order_form_index', ['id' => $order->getId()]);
+            }
+
+            return $this->redirectToRoute('homepage_index');
         }
 
         return $this->render('order_form/index.html.twig', [

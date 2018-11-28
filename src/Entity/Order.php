@@ -270,6 +270,10 @@ class Order
 
     public function updateTotalPrice(): void
     {
-        $this->totalPrice = $this->product->getPrice() + $this->delivery->getPrice() + $this->payment->getPrice();
+        $this->totalPrice =
+            ($this->quantity * $this->product->getPrice()) +
+            $this->delivery->getPrice() +
+            $this->payment->getPrice()
+        ;
     }
 }
