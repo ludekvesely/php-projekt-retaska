@@ -9,6 +9,7 @@
     </head>
     <body>
         <header>
+            {% block nav %}
             <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
                 <a class="navbar-brand" href="{{ path('homepage_index') }}">Re-taška</a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -27,6 +28,7 @@
                     </ul>
                 </div>
             </nav>
+            {% endblock %}
         </header>
         <main role="main" class="container">
             {% block body %}{% endblock %}
@@ -35,7 +37,8 @@
             <div class="container text-center">
                 <span class="text-muted">
                     <a href="{{ path('homepage_index') }}">Hlavní strana</a>
-                    | 777 000 000 | info@retaska.cz | © Re-taška 2018
+                    | 777 000 000 | info@retaska.cz | © Re-taška 2018 |
+                    <a href="{{ path('admin_index') }}" class="text-muted">Administrace</a>
                 </span>
             </div>
         </footer>
