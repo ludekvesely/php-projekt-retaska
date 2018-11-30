@@ -18,11 +18,4 @@ class DeliveryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Delivery::class);
     }
-
-    public function findFirst(): Delivery
-    {
-        $orders = $this->findBy([], null, 1);
-
-        return current($orders);
-    }
 }

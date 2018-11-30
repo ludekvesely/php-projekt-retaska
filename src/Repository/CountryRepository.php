@@ -18,11 +18,4 @@ class CountryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Country::class);
     }
-
-    public function findFirst(): Country
-    {
-        $orders = $this->findBy([], null, 1);
-
-        return current($orders);
-    }
 }

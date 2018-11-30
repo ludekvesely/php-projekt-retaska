@@ -30,9 +30,6 @@ class OrderFormController extends AbstractController
         $order = new Order();
         $order->setProduct($product);
         $order->setQuantity(1);
-        $order->setDelivery($deliveryRepository->findFirst());
-        $order->setPayment($paymentRepository->findFirst());
-        $order->setCountry($countryRepository->findFirst());
         $order->updateTotalPrice();
 
         $em = $this->getDoctrine()->getManager();

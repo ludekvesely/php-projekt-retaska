@@ -10,9 +10,14 @@
             <br>
             <div class="card">
                 <ul class="list-group list-group-flush">
+                    <a href="{{ path('product_list_index') }}">
+                        <li class="list-group-item {% if currentCategory is not defined %}active{% endif %}">
+                            Všechny produkty
+                        </li>
+                    </a>
                     {% for category in categories %}
                         <a href="{{ path('product_list_category', {'id': category.id}) }}">
-                            <li class="list-group-item {% if category.id == currentCategory.id %}active{% endif %}">
+                            <li class="list-group-item {% if currentCategory is defined and category.id == currentCategory.id %}active{% endif %}">
                                 {{ category.name }}
                             </li>
                         </a>

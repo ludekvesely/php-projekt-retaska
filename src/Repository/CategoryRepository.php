@@ -18,11 +18,4 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
-
-    public function findFirst(): Category
-    {
-        $orders = $this->findBy([], null, 1);
-
-        return current($orders);
-    }
 }

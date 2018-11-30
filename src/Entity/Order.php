@@ -65,14 +65,15 @@ class Order
      * @ORM\Column(type="string", length=5, nullable=true)
      * @Assert\Regex("/\d/")
      * @Assert\Length(min="5", max="5")
-     * @Assert\NotBlank(message="Vyplňte prosím PSČ")
+     * @Assert\NotBlank(message="Vyplňte prosím PSČ ve tvaru 12300")
      */
     private $zip;
 
     /**
      * @var Country
      * @ORM\ManyToOne(targetEntity="App\Entity\Country")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank(message="Zvolte prosím zemi doručení")
      */
     private $country;
 
@@ -94,14 +95,16 @@ class Order
     /**
      * @var Payment
      * @ORM\ManyToOne(targetEntity="App\Entity\Payment")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank(message="Zvolte prosím platbu")
      */
     private $payment;
 
     /**
      * @var Delivery
      * @ORM\ManyToOne(targetEntity="App\Entity\Delivery")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank(message="Zvolte prosím metodu doručení")
      */
     private $delivery;
 
@@ -285,11 +288,15 @@ class Order
 
     public function updateTotalPrice(): void
     {
-        $this->totalPrice =
-            ($this->quantity * $this->product->getPrice()) +
-            $this->delivery->getPrice() +
-            $this->payment->getPrice()
-        ;
+        $this->totalPrice = $this->quantity * $this->product->getPrice();
+
+        if ($this->delivery !== null) {
+            $this->totalPrice += $this->delivery->getPrice();
+        }
+
+        if ($this->payment !== null) {
+            $this->totalPrice += $this->payment->getPrice();
+        }
     }
 
     public function getCreated(): ?\DateTimeInterface

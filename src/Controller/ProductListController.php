@@ -35,10 +35,13 @@ class ProductListController extends AbstractController
     /**
      * @Route("/", name="product_list_index")
      */
-    public function index(CategoryRepository $categoryRepository): Response
-    {
-        $categoryId = $categoryRepository->findFirst()->getId();
-
-        return $this->redirectToRoute('product_list_category', ['id' => $categoryId]);
+    public function index(
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository
+    ): Response {
+        return $this->render('product_list/index.html.twig', [
+            'products' => $productRepository->findAll(),
+            'categories' => $categoryRepository->findAll()
+        ]);
     }
 }

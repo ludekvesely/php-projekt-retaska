@@ -18,11 +18,4 @@ class PaymentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Payment::class);
     }
-
-    public function findFirst(): Payment
-    {
-        $orders = $this->findBy([], null, 1);
-
-        return current($orders);
-    }
 }
