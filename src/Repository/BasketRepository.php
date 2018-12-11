@@ -49,6 +49,11 @@ class BasketRepository
         $this->setBasket($basket);
     }
 
+    public function clear(): void
+    {
+        $this->setBasket([]);
+    }
+
     public function getBasket(): array
     {
         return $this->session->get(self::SESSION_BASKET_KEY, []);

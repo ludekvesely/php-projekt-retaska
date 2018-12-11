@@ -20,8 +20,9 @@ class OrderFormController extends AbstractController
     /**
      * @Route("/confirm", name="order_form_confirm")
      */
-    public function confirm(): Response
+    public function confirm(BasketRepository $basketRepository): Response
     {
+        $basketRepository->clear();
         return $this->render('order_form/confirmation.html.twig');
     }
 
