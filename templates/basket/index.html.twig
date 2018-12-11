@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nákupní košík{% endblock %}
+
+{% block body %}
+    <h1>Nákupní košík</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Počet</th>
+                <th>Cena za kus</th>
+                <th>Cena celkem</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set sum =  0 %}
+            {% for item in basket %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>
+                        {{ item.amount }}
+                        <a href="{{ path('basket_update', {'id': item.id, 'amount': item.amount+1}) }}"
+                           class="btn btn-sm btn-primary">
+                            +
+                        </a>
+                        <a href="{{ path('basket_update', {'id': item.id, 'amount': item.amount-1}) }}"
+                           class="btn btn-sm btn-primary">
+                            -
+                        </a>
+                    </td>
+                    <td>{{ item.price|number_format(2, ',', ' ')  }} Kč</td>
+                    <td>{{ (item.amount*item.price)|number_format(2, ',', ' ')  }} Kč</td>
+                    {% set sum = sum + item.amount*item.price %}
+                </tr>
+            {% endfor %}
+            <tr class="table-light">
+                <td colspan="3"></td>
+                <td><b>{{ sum|number_format(2, ',', ' ') }} Kč</b></td>
+            <tr></tr>
+        </tbody>
+    </table>
+    <a href="{{ path('order_form_index') }}" class="btn btn-success">Pokračovat v objednávce</a>
+
+{% endblock %}

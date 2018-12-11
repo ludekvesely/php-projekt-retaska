@@ -17,7 +17,6 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('quantity', null, ['label' => 'Počet'])
             ->add('email', null, ['label' => 'E-mail'])
             ->add('phone', null, ['label' => 'Telefon'])
             ->add('nameAndSurname', null, ['label' => 'Jméno a příjmení'])
@@ -39,10 +38,6 @@ class OrderType extends AbstractType
                 'class' => Delivery::class,
                 'choice_label' => 'name',
                 'label' => 'Doprava'
-            ])
-            ->add('updateTotalPrice', SubmitType::class, [
-                'validation_groups' => false,
-                'label' => 'Přepočítat cenu objednávky'
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Odeslat objednávku',

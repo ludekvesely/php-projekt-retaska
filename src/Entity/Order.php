@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,18 +19,6 @@ class Order
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @var Product
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $product;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -88,11 +78,6 @@ class Order
     private $totalPrice;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $submitted = false;
-
-    /**
      * @var Payment
      * @ORM\ManyToOne(targetEntity="App\Entity\Payment")
      * @ORM\JoinColumn(nullable=true)
@@ -113,33 +98,20 @@ class Order
      */
     private $created;
 
+    /**
+     * @var OrderProduct[]
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="order", orphanRemoval=true)
+     */
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -250,18 +222,6 @@ class Order
         return $this;
     }
 
-    public function getSubmitted(): ?bool
-    {
-        return $this->submitted;
-    }
-
-    public function setSubmitted(bool $submitted): self
-    {
-        $this->submitted = $submitted;
-
-        return $this;
-    }
-
     public function getPayment(): ?Payment
     {
         return $this->payment;
@@ -286,19 +246,6 @@ class Order
         return $this;
     }
 
-    public function updateTotalPrice(): void
-    {
-        $this->totalPrice = $this->quantity * $this->product->getPrice();
-
-        if ($this->delivery !== null) {
-            $this->totalPrice += $this->delivery->getPrice();
-        }
-
-        if ($this->payment !== null) {
-            $this->totalPrice += $this->payment->getPrice();
-        }
-    }
-
     public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
@@ -309,5 +256,53 @@ class Order
         $this->created = $created;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|OrderProduct[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(OrderProduct $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(OrderProduct $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getOrder() === $this) {
+                $product->setOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function updateTotalPrice(): void
+    {
+        $this->totalPrice = 0;
+
+        foreach ($this->products as $product) {
+            $this->totalPrice += $product->getAmount() * $product->getUnitPrice();
+        }
+
+        if ($this->delivery !== null) {
+            $this->totalPrice += $this->delivery->getPrice();
+        }
+
+        if ($this->payment !== null) {
+            $this->totalPrice += $this->payment->getPrice();
+        }
     }
 }

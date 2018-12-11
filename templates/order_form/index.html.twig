@@ -6,9 +6,13 @@
     <h1>Objednávkový formulář</h1>
     <div class="row">
         <div class="col-8">
-            {% if remainingOnStock is defined %}
+            {% if remainingOnStock is defined and remainingOnStock is not null %}
                 <div class="alert alert-danger">
                     Na skladě zbývá pouze {{ remainingOnStock }} kusů.
+                </div>
+            {% elseif remainingOnStock is defined %}
+                <div class="alert alert-danger">
+                    Produkt nebyl nalezen.
                 </div>
             {% endif %}
             {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -19,8 +23,18 @@
                     Shrnutí objednávky
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Objednaný produkt:</h5>
-                    <p class="card-text">{{ order.product.name }}</p>
+                    <h5 class="card-title">Objednané produkty:</h5>
+                    <p class="card-text">
+                        <ul>
+                        {% for product in basket %}
+                            <li>
+                                {{ product.name }}
+                                ({{ product.price|number_format(0, ',', ' ') }} Kč/ks):
+                                {{ product.amount }}x
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </p>
                     <h5 class="card-title">Celková cena:</h5>
                     <p class="card-text">{{ order.totalPrice|number_format(2, ',', ' ') }} Kč</p>
                 </div>
