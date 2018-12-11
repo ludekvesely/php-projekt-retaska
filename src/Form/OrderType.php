@@ -32,12 +32,20 @@ class OrderType extends AbstractType
             ->add('payment', EntityType::class, [
                 'class' => Payment::class,
                 'choice_label' => 'name',
-                'label' => 'Platba'
+                'label' => 'Platba',
+                'choice_attr' => function($payment) {
+                    /** @var Payment $payment */
+                    return ['data-price' => $payment->getPrice()];
+                }
             ])
             ->add('delivery', EntityType::class, [
                 'class' => Delivery::class,
                 'choice_label' => 'name',
-                'label' => 'Doprava'
+                'label' => 'Doprava',
+                'choice_attr' => function($delivery) {
+                    /** @var Delivery $delivery */
+                    return ['data-price' => $delivery->getPrice()];
+                }
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Odeslat objednávku',

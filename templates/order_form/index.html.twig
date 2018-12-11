@@ -26,19 +26,43 @@
                     <h5 class="card-title">Objednané produkty:</h5>
                     <p class="card-text">
                         <ul>
+                        {% set productsPrice = 0 %}
                         {% for product in basket %}
                             <li>
                                 {{ product.name }}
                                 ({{ product.price|number_format(0, ',', ' ') }} Kč/ks):
                                 {{ product.amount }}x
+                                {% set productsPrice = productsPrice + product.price * product.amount %}
                             </li>
                         {% endfor %}
                         </ul>
                     </p>
                     <h5 class="card-title">Celková cena:</h5>
-                    <p class="card-text">{{ order.totalPrice|number_format(2, ',', ' ') }} Kč</p>
+                    <p class="card-text">
+                        <span id="order_products_price" style="display:none">{{ productsPrice }}</span>
+                        <span id="order_total_price">0</span> Kč
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    function updateTotalPrice() {
+        let productsPrice = parseFloat($('#order_products_price').text());
+        let paymentPrice = parseFloat($('#order_payment option:selected').attr('data-price'));
+        let deliveryPrice = parseFloat($('#order_delivery option:selected').attr('data-price'));
+        $('#order_total_price').text(productsPrice + paymentPrice + deliveryPrice)
+    }
+
+    $(document).ready(function() {
+        updateTotalPrice();
+    });
+
+    $('select').on('change', function() {
+        updateTotalPrice();
+    });
+</script>
 {% endblock %}
