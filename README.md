@@ -13,3 +13,6 @@
 
 ### Založení tabulek
 `bin/console doctrine:schema:update --force`
+
+### Vytvoření uživatele do administrace
+`bin/console user:create admin 1234`
