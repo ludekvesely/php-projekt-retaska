@@ -21,6 +21,10 @@
                             <a class="nav-link" href="{{ path('product_list_index') }}">Seznam produktů</a>
                         </li>
                     </ul>
+                    <form class="form-inline my-2 my-lg-0" action="{{ path('product_list_search') }}">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Vyhledat produkt..." name="search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Hledat</button>
+                    </form>
                     <ul class="navbar-nav my-2 my-sm-0">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('basket_index') }}">Košík</a>
@@ -28,6 +32,17 @@
                         <li class="nav-item">
                             <span class="nav-link">Telefon: 777 000 000</span>
                         </li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="nav-item">
+                                <span class="nav-link">Přihlášený uživatel: {{ app.user.username }}</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}">Odhlásit</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('admin_index') }}">Zobrazit administraci</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
